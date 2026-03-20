@@ -19,14 +19,14 @@ export default function ContactSection() {
             <Phone className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
             <div>
               <h3 className="font-heading text-lg font-semibold text-foreground">Phone</h3>
-              <p className="text-muted-foreground text-sm">Sports Committee Office</p>
+              <p className="text-muted-foreground text-sm">+91-8506051876</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
             <Mail className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
             <div>
               <h3 className="font-heading text-lg font-semibold text-foreground">Email</h3>
-              <p className="text-muted-foreground text-sm">sports@bpdseu.ac.in</p>
+              <p className="text-muted-foreground text-sm">sumitrathore45528@gmail.com</p>
             </div>
           </div>
           <div className="mt-4 p-4 rounded-lg bg-muted">
