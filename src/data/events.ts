@@ -17,6 +17,7 @@ export interface EventData {
   captains: Captain[];
   generalRules: string[];
   fouls: string[];
+  whatsappLink?: string;
 }
 
 export const events: EventData[] = [
@@ -28,6 +29,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "03:00 PM - 05:00 PM",
     image: "event-volleyball",
+    whatsappLink: " https://chat.whatsapp.com/H2rrKcLKy7j1KDf4uPqCyI?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate", "Dr. Preeti Bedi"],
     captains: [
       { name: "Abhinav", role: "Captain", program: "B.Tech DS", phone: "9111422551" },
@@ -56,6 +58,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-armwrestling",
+    whatsappLink: "https://chat.whatsapp.com/HxfcsqmqTk21J2Di8T97Uj?mode=gi_t",
     facultyIncharges: ["Dr. Ajith Kumar", "Sh. S.K. Awasthi", "Mrs. S.P. Meenu Kalra"],
     captains: [
       { name: "Devansh", role: "Captain", program: "B.Tech DS", phone: "9625903335" },
@@ -81,6 +84,7 @@ export const events: EventData[] = [
     date: "24 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-badminton",
+    whatsappLink: "https://chat.whatsapp.com/LYBUaOIEemv7UhHqDJUvbX?mode=gi_t",
     facultyIncharges: ["Sh. G.T.V.LN. Charyulu", "Mrs. Meenu Kalra"],
     captains: [
       { name: "Yash", role: "Captain", program: "B.Tech AI", phone: "8588868696" },
@@ -107,6 +111,7 @@ export const events: EventData[] = [
     date: "24 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-chess",
+    whatsappLink: "https://chat.whatsapp.com/J0teu29xJmiJmZUe4czPeC?mode=gi_t",
     facultyIncharges: ["Sh. Deepak Sharma", "Dr. Kaushal Mehta"],
     captains: [
       { name: "Mehul", role: "Captain", program: "B.Tech AI", phone: "9560014212" },
@@ -130,6 +135,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "TBD",
     image: "event-carrom",
+    whatsappLink: "https://chat.whatsapp.com/HwiyFb3MK659Z0kqLxCBXc?mode=gi_t",
     facultyIncharges: ["Dr. Mamta Mittal"],
     captains: [
       { name: "TBD", role: "Captain", program: "To be decided", phone: "-" },
@@ -153,6 +159,7 @@ export const events: EventData[] = [
     date: "24 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-tabletennis",
+    whatsappLink: "https://chat.whatsapp.com/GyPVMfXNyRmFJKusx37d2C?mode=gi_t",
     facultyIncharges: ["Dr. P. Preeti Bedi", "Sh. Chitre"],
     captains: [
       { name: "Abhinandan", role: "Captain", program: "BFSI", phone: "6307567506" },
@@ -176,6 +183,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "1:00 PM",
     image: "event-tugofwar",
+    whatsappLink: "https://chat.whatsapp.com/LlHnyU6JZFs8I7Mq6iUIuJ?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate", "Dr. Preeti Bedi"],
     captains: [
       { name: "TBD", role: "Captain", program: "To be decided", phone: "-" },
@@ -199,6 +207,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-football",
+    whatsappLink: "https://chat.whatsapp.com/IZWg4grwQlLJeqqe1lbLK3?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate"],
     captains: [
       { name: "Sahil", role: "Captain", program: "BFSI", phone: "6203486221" },

@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { events, generalRulesForAll } from "@/data/events";
-import { ArrowLeft, Calendar, Clock, Phone, Users, Shield, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Phone, Users, Shield, AlertTriangle, MessageCircle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import RegistrationModal from "@/components/RegistrationModal";
@@ -14,6 +14,7 @@ export default function EventDetail() {
   const { id } = useParams();
   const event = events.find((e) => e.id === id);
   const [showRegister, setShowRegister] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const [isIntroPlaying, setIsIntroPlaying] = useState(true);
   const { user, signInWithGoogle } = useAuth();
 
@@ -25,6 +26,14 @@ export default function EventDetail() {
     }, 2200); // 2.2 seconds loading animation
     return () => clearTimeout(timer);
   }, [id]);
+
+  // Check if locally registered whenever event mounts or modal closes
+  useEffect(() => {
+    if (event?.id) {
+      const localCheck = window.localStorage.getItem(`registered_${event.id}`);
+      setIsRegistered(localCheck === "true");
+    }
+  }, [event?.id, showRegister]);
 
   if (!event) {
     return (
@@ -189,10 +198,24 @@ export default function EventDetail() {
               </div>
             </div>
 
-            {user ? (
+            {isRegistered ? (
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center justify-center gap-2 text-sport-green font-heading font-semibold bg-sport-green/10 border border-sport-green/20 py-3 rounded-lg">
+                  <CheckCircle2 className="w-5 h-5" /> YOU ARE REGISTERED FOR THIS EVENT
+                </div>
+                {event.whatsappLink && (
+                  <a href={event.whatsappLink} target="_blank" rel="noopener noreferrer" className="block w-full">
+                    <Button className="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold tracking-widest drop-shadow-md gap-2 h-12" size="lg">
+                      <MessageCircle className="w-5 h-5 fill-current" />
+                      JOIN EVENT WHATSAPP GROUP
+                    </Button>
+                  </a>
+                )}
+              </div>
+            ) : user ? (
               <Button
                 size="lg"
-                className="w-full gradient-cta text-primary-foreground font-heading text-lg"
+                className="w-full gradient-cta text-primary-foreground font-heading text-lg h-12 border border-primary/20"
                 onClick={() => setShowRegister(true)}
               >
                 Register Now
@@ -201,7 +224,7 @@ export default function EventDetail() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full font-heading text-lg border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                className="w-full font-heading text-lg border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors h-12"
                 onClick={signInWithGoogle}
               >
                 Login to Register

@@ -14,6 +14,7 @@ import type { EventData } from "@/data/events";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
+import { MessageCircle } from "lucide-react";
 
 interface PlayerDetails {
   name: string;
@@ -158,6 +159,9 @@ export default function RegistrationModal({
       const { error } = await supabase.from("registrations").insert(payload);
       if (error) throw error;
 
+      // Remember registration locally so EventDetail page updates automatically
+      window.localStorage.setItem(`registered_${event.id}`, "true");
+
       toast.success("Registration successfully synced to the arena!");
       setSubmitted(true);
     } catch (err: any) {
@@ -186,13 +190,23 @@ export default function RegistrationModal({
         </div>
 
         {submitted ? (
-          <div className="flex flex-col items-center gap-4 py-12 px-6">
+          <div className="flex flex-col items-center gap-4 py-12 px-6 text-center">
             <Trophy className="w-20 h-20 text-primary drop-shadow-[0_0_15px_rgba(255,100,0,0.5)]" strokeWidth={1} />
-            <p className="font-display tracking-wider text-2xl text-foreground mt-2">REGISTRATION CONFIRMED</p>
-            <p className="text-sm text-muted-foreground text-center max-w-[80%]">
+            <p className="font-display tracking-wider text-2xl text-foreground mt-2 uppercase">Registration Confirmed</p>
+            <p className="text-sm text-muted-foreground max-w-[85%]">
               You are officially entering the battlefield for {event.name}. Good luck, champion!
             </p>
-            <Button onClick={onClose} variant="outline" className="mt-4 font-heading hover:bg-primary/10 hover:text-primary transition-all">
+            
+            {event.whatsappLink && (
+              <a href={event.whatsappLink} target="_blank" rel="noopener noreferrer" className="w-[80%] mt-4">
+                <Button className="w-full bg-[#25D366] hover:bg-[#1DA851] text-white font-bold tracking-wide drop-shadow-md gap-2" size="lg">
+                  <MessageCircle className="w-5 h-5 fill-current" />
+                  JOIN WHATSAPP GROUP
+                </Button>
+              </a>
+            )}
+
+            <Button onClick={onClose} variant="outline" className={`font-heading hover:bg-primary/10 hover:text-primary transition-all ${event.whatsappLink ? "mt-2" : "mt-4"}`}>
               Return to Arena
             </Button>
           </div>
