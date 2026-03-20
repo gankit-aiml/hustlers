@@ -18,22 +18,24 @@ export const AnimatedArmWrestling = ({ className }: IconProps) => (
     <circle cx="50" cy="85" r="4" className="fill-muted-foreground" />
     
     {/* Left Arm (Secondary/Cyan) */}
-    <motion.g
-      style={{ transformOrigin: "25px 85px" }}
-      animate={{ rotate: [0, 20, -10, 0] }}
-      transition={baseTransition}
-    >
-      <path d="M25 85 Q 35 60 50 40" className="stroke-secondary drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]" />
-    </motion.g>
+    <g transform="translate(25, 85)">
+      <motion.g
+        animate={{ rotate: [0, 20, -10, 0] }}
+        transition={baseTransition}
+      >
+        <path d="M0 0 Q 10 -25 25 -45" className="stroke-secondary drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]" />
+      </motion.g>
+    </g>
 
     {/* Right Arm (Primary/Orange) */}
-    <motion.g
-      style={{ transformOrigin: "75px 85px" }}
-      animate={{ rotate: [0, 20, -10, 0] }}
-      transition={baseTransition}
-    >
-      <path d="M75 85 Q 65 60 50 40" className="stroke-primary drop-shadow-[0_0_8px_rgba(255,100,0,0.6)]" />
-    </motion.g>
+    <g transform="translate(75, 85)">
+      <motion.g
+        animate={{ rotate: [0, -20, 10, 0] }}
+        transition={baseTransition}
+      >
+        <path d="M0 0 Q -10 -25 -25 -45" className="stroke-primary drop-shadow-[0_0_8px_rgba(255,100,0,0.6)]" />
+      </motion.g>
+    </g>
 
     {/* Hands locking & pushing - approximate tracking */}
     <motion.circle
@@ -59,20 +61,21 @@ export const AnimatedBadminton = ({ className }: IconProps) => (
     {/* Static Arm */}
     <line x1="22" y1="45" x2="12" y2="52" className="stroke-secondary" />
     
-    {/* Swinging Arm & Racket (Anchored firmly at shoulder x=22 y=45) */}
-    <motion.g 
-      style={{ transformOrigin: "22px 45px" }} 
-      animate={{ rotate: [-20, 80, -20] }} 
-      transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
-    >
-      {/* Arm swinging */}
-      <line x1="22" y1="45" x2="35" y2="30" className="stroke-secondary" />
-      {/* Racket */}
-      <line x1="35" y1="30" x2="40" y2="25" className="stroke-white" strokeWidth="3" />
-      <ellipse cx="45" cy="20" rx="5" ry="9" className="stroke-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" strokeWidth="2" />
-      <line x1="42" y1="20" x2="48" y2="20" className="stroke-white opacity-50" strokeWidth="1" />
-      <line x1="45" y1="15" x2="45" y2="25" className="stroke-white opacity-50" strokeWidth="1" />
-    </motion.g>
+    {/* Swinging Arm & Racket (Anchored mathematically at shoulder bottom-left of group) */}
+    <g transform="translate(22, 45)">
+      <motion.g 
+        animate={{ rotate: [-20, 80, -20] }} 
+        transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
+      >
+        {/* Arm swinging */}
+        <line x1="0" y1="0" x2="13" y2="-15" className="stroke-secondary" />
+        {/* Racket */}
+        <line x1="13" y1="-15" x2="18" y2="-20" className="stroke-white" strokeWidth="3" />
+        <ellipse cx="23" cy="-25" rx="5" ry="9" className="stroke-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]" strokeWidth="2" />
+        <line x1="20" y1="-25" x2="26" y2="-25" className="stroke-white opacity-50" strokeWidth="1" />
+        <line x1="23" y1="-30" x2="23" y2="-20" className="stroke-white opacity-50" strokeWidth="1" />
+      </motion.g>
+    </g>
 
     {/* Shuttlecock Flying */}
     <motion.g 
@@ -135,9 +138,10 @@ export const AnimatedChess = ({ className }: IconProps) => (
 
     {/* Static Piece (Pawn silhouette) */}
     <g className="drop-shadow-[0_0_5px_rgba(0,255,255,0.5)]">
-      <line x1="20" y1="75" x2="30" y2="75" className="stroke-secondary" />
-      <path d="M 22 75 C 24 60, 26 60, 25 55" className="stroke-secondary" fill="none" />
-      <circle cx="25" cy="50" r="4" className="stroke-secondary fill-secondary" />
+      <path d="M 18 75 L 32 75 L 28 68 L 22 68 Z" className="fill-secondary stroke-none" />
+      <path d="M 23 68 Q 25 60 23 55 L 27 55 Q 25 60 27 68 Z" className="fill-secondary stroke-none" />
+      <line x1="22" y1="55" x2="28" y2="55" className="stroke-secondary" strokeWidth="2" />
+      <circle cx="25" cy="48" r="5" className="fill-secondary stroke-none" />
     </g>
 
     {/* Moving Hand & Piece */}
@@ -151,9 +155,10 @@ export const AnimatedChess = ({ className }: IconProps) => (
       
       {/* Moved Piece (White Pawn, clearly recognizable) */}
       <g className="drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
-        <line x1="55" y1="75" x2="75" y2="75" className="stroke-white" />
-        <path d="M 59 75 C 62 60, 68 60, 65 55 Z" className="fill-white stroke-none" />
-        <circle cx="65" cy="50" r="4" className="stroke-white fill-white" />
+        <path d="M 58 75 L 72 75 L 68 68 L 62 68 Z" className="fill-white stroke-none" />
+        <path d="M 63 68 Q 65 60 63 55 L 67 55 Q 65 60 67 68 Z" className="fill-white stroke-none" />
+        <line x1="62" y1="55" x2="68" y2="55" className="stroke-white" strokeWidth="2" />
+        <circle cx="65" cy="48" r="5" className="fill-white stroke-none" />
       </g>
     </motion.g>
   </svg>
@@ -179,14 +184,15 @@ export const AnimatedFootball = ({ className }: IconProps) => (
     {/* Arms (Running pose) */}
     <path d="M 20 50 L 30 42 L 40 46" className="stroke-primary" />
     
-    {/* Kicking Leg - Anchored firmly to the hip x=30 y=58 */}
-    <motion.g 
-      style={{ transformOrigin: "30px 58px" }}
-      animate={{ rotate: [-30, 45, -30] }}
-      transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <line x1="30" y1="58" x2="42" y2="75" className="stroke-primary" />
-    </motion.g>
+    {/* Kicking Leg - Anchored mathematically to the hip x=30 y=58 */}
+    <g transform="translate(30, 58)">
+      <motion.g 
+        animate={{ rotate: [-30, 45, -30] }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <line x1="0" y1="0" x2="12" y2="17" className="stroke-primary" />
+      </motion.g>
+    </g>
 
     {/* Ball (Cyan/Secondary) flying into net */}
     <motion.circle 
@@ -210,15 +216,16 @@ export const AnimatedTableTennis = ({ className }: IconProps) => (
     <path d="M 20 60 L 10 75 M 20 60 L 25 75" className="stroke-secondary" />
     
     {/* Swinging Right Arm */}
-    <motion.g 
-      style={{ transformOrigin: "20px 42px" }} 
-      animate={{ rotate: [-30, 50, -30] }} 
-      transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <line x1="20" y1="42" x2="30" y2="52" className="stroke-secondary" />
-      {/* Paddle */}
-      <circle cx="34" cy="55" r="4" className="fill-secondary stroke-none drop-shadow-[0_0_5px_rgba(0,255,255,0.5)]" />
-    </motion.g>
+    <g transform="translate(20, 42)">
+      <motion.g  
+        animate={{ rotate: [-30, 50, -30] }} 
+        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <line x1="0" y1="0" x2="10" y2="10" className="stroke-secondary" />
+        {/* Paddle */}
+        <circle cx="14" cy="13" r="4" className="fill-secondary stroke-none drop-shadow-[0_0_5px_rgba(0,255,255,0.5)]" />
+      </motion.g>
+    </g>
 
     {/* Player 2 Right (Orange/Primary) Human */}
     <circle cx="80" cy="35" r="4" className="stroke-primary fill-primary" />
@@ -226,15 +233,16 @@ export const AnimatedTableTennis = ({ className }: IconProps) => (
     <path d="M 80 60 L 90 75 M 80 60 L 75 75" className="stroke-primary" />
     
     {/* Swinging Right Arm */}
-    <motion.g 
-      style={{ transformOrigin: "80px 42px" }} 
-      animate={{ rotate: [30, -50, 30] }} 
-      transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-    >
-      <line x1="80" y1="42" x2="70" y2="52" className="stroke-primary" />
-      {/* Paddle */}
-      <circle cx="66" cy="55" r="4" className="fill-primary stroke-none drop-shadow-[0_0_5px_rgba(255,100,0,0.5)]" />
-    </motion.g>
+    <g transform="translate(80, 42)">
+      <motion.g 
+        animate={{ rotate: [30, -50, 30] }} 
+        transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
+      >
+        <line x1="0" y1="0" x2="-10" y2="10" className="stroke-primary" />
+        {/* Paddle */}
+        <circle cx="-14" cy="13" r="4" className="fill-primary stroke-none drop-shadow-[0_0_5px_rgba(255,100,0,0.5)]" />
+      </motion.g>
+    </g>
 
     {/* Ball (White) bouncing between paddles */}
     <motion.circle 
@@ -294,14 +302,15 @@ export const AnimatedVolleyball = ({ className }: IconProps) => (
       {/* Left arm (static balance) */}
       <line x1="25" y1="42" x2="15" y2="40" className="stroke-secondary" />
       
-      {/* Swinging Right Arm (Anchored strictly to torso at x=25 y=40) */}
-      <motion.g 
-        style={{ transformOrigin: "25px 40px" }}
-        animate={{ rotate: [-40, 60, -40] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
-      >
-        <line x1="25" y1="40" x2="35" y2="25" className="stroke-secondary" />
-      </motion.g>
+      {/* Swinging Right Arm (Anchored mathematically to torso at x=25 y=40, which is Bottom-Left of the arm bounding box) */}
+      <g transform="translate(25, 40)">
+        <motion.g 
+          animate={{ rotate: [-40, 60, -40] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+        >
+          <line x1="0" y1="0" x2="10" y2="-15" className="stroke-secondary" />
+        </motion.g>
+      </g>
     </motion.g>
 
     {/* Receiving Player (Primary/Orange) static lower stance */}
