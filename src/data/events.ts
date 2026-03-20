@@ -191,6 +191,32 @@ export const events: EventData[] = [
       "Footwear Foul: Wearing spikes or cleats is strictly prohibited; only standard sports shoes are allowed.",
     ],
   },
+  {
+    id: "football",
+    name: "Football",
+    emoji: "⚽",
+    type: "team",
+    date: "25 March 2026",
+    time: "11:00 AM - 1:00 PM",
+    image: "event-football",
+    facultyIncharges: ["Sh. J.R. Bhowate"],
+    captains: [
+      { name: "Sahil", role: "Captain", program: "BFSI", phone: "6203486221" },
+      { name: "Manish", role: "Vice Captain", program: "B.Tech AI", phone: "9560316352" },
+    ],
+    generalRules: [
+      "Standard 5-a-side or 7-a-side rules apply depending on ground availability.",
+      "Match duration will be decided by officials on the day.",
+      "Offside rule may or may not be applied based on officials' discretion.",
+      "All participants must follow fair play and sportsmanship.",
+    ],
+    fouls: [
+      "Handball: Intentionally touching the ball with hands or arms.",
+      "Dangerous play: Any action that endangers an opponent.",
+      "Unsporting behaviour may lead to yellow or red card.",
+      "Decisions of referees/officials are final.",
+    ],
+  },
 ];
 
 export const generalRulesForAll = [
