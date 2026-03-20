@@ -15,6 +15,7 @@ const navLinks = [
 // Provide your authorized admin emails here
 const ADMIN_EMAILS = [
   "gankitsysdev@gmail.com",
+  "sam8920341517@gmail.com",
 ];
 
 export default function Navbar() {

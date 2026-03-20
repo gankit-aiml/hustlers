@@ -9,7 +9,7 @@ import { Loader2, Users, Database, Filter } from "lucide-react";
 // Synchronize this with Navbar.tsx!
 const ADMIN_EMAILS = [
   "gankitsysdev@gmail.com",
-  "sam8920341517@gmail.com"
+  "sam8920341517@gmail.com",
 ];
 
 interface Registration {
