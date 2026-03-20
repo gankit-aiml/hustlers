@@ -9,6 +9,7 @@ import { Loader2, Users, Database, Filter } from "lucide-react";
 // Synchronize this with Navbar.tsx!
 const ADMIN_EMAILS = [
   "gankitsysdev@gmail.com",
+  "sam8920341517@gmail.com"
 ];
 
 interface Registration {
@@ -75,7 +76,7 @@ export default function Dashboard() {
             <Database className="w-8 h-8 text-primary" />
             <h1 className="font-display text-4xl text-foreground">COMMAND CENTER</h1>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-muted-foreground mr-1" />
             <Select value={selectedEvent} onValueChange={setSelectedEvent}>
