@@ -3,6 +3,7 @@ import SplashScreen from "@/components/SplashScreen";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import EventsGrid from "@/components/EventsGrid";
+import LeadershipSection from "@/components/LeadershipSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
@@ -18,6 +19,7 @@ export default function Index() {
           <main className="flex-1">
             <HeroSection />
             <EventsGrid />
+            <LeadershipSection />
             <ContactSection />
           </main>
           <Footer />

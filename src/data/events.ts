@@ -9,7 +9,7 @@ export interface EventData {
   id: string;
   name: string;
   emoji: string;
-  type: "team" | "individual";
+  type: "team" | "individual" | "duo";
   date: string;
   time: string;
   image: string;
@@ -77,7 +77,7 @@ export const events: EventData[] = [
     id: "badminton",
     name: "Badminton",
     emoji: "🏸",
-    type: "team",
+    type: "duo",
     date: "24 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-badminton",
@@ -172,7 +172,7 @@ export const events: EventData[] = [
     id: "tug-of-war",
     name: "Tug of War",
     emoji: "🪢",
-    type: "team",
+    type: "individual",
     date: "25 March 2026",
     time: "1:00 PM",
     image: "event-tugofwar",
@@ -195,7 +195,7 @@ export const events: EventData[] = [
     id: "football",
     name: "Football",
     emoji: "⚽",
-    type: "team",
+    type: "individual",
     date: "25 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-football",
