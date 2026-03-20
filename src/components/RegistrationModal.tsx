@@ -25,15 +25,15 @@ interface PlayerDetails {
 
 const emptyPlayer = (): PlayerDetails => ({ name: "", rollNo: "", department: "", year: "", phone: "" });
 
-const PlayerFormGroup = ({ 
-  title, 
-  player, 
+const PlayerFormGroup = ({
+  title,
+  player,
   onChange,
   onRemove,
   isMember = false
-}: { 
-  title: string; 
-  player: PlayerDetails; 
+}: {
+  title: string;
+  player: PlayerDetails;
   onChange: (p: PlayerDetails) => void;
   onRemove?: () => void;
   isMember?: boolean;
@@ -49,25 +49,25 @@ const PlayerFormGroup = ({
         </Button>
       )}
     </div>
-    <Input placeholder="Full Name" value={player.name} onChange={(e) => onChange({...player, name: e.target.value})} className="bg-background/50" />
+    <Input placeholder="Full Name" value={player.name} onChange={(e) => onChange({ ...player, name: e.target.value })} className="bg-background/50" />
     <div className="grid grid-cols-2 gap-3">
-      <Input placeholder="Roll Number" value={player.rollNo} onChange={(e) => onChange({...player, rollNo: e.target.value})} className="bg-background/50" />
-      <Input placeholder="Phone Number" type="tel" value={player.phone} onChange={(e) => onChange({...player, phone: e.target.value})} className="bg-background/50" />
+      <Input placeholder="Roll Number" value={player.rollNo} onChange={(e) => onChange({ ...player, rollNo: e.target.value })} className="bg-background/50" />
+      <Input placeholder="Phone Number" type="tel" value={player.phone} onChange={(e) => onChange({ ...player, phone: e.target.value })} className="bg-background/50" />
     </div>
     <div className="grid grid-cols-2 gap-3">
-      <Select value={player.department || undefined} onValueChange={(val) => onChange({...player, department: val})}>
+      <Select value={player.department || undefined} onValueChange={(val) => onChange({ ...player, department: val })}>
         <SelectTrigger className="bg-background/50"><SelectValue placeholder="Department" /></SelectTrigger>
         <SelectContent>
-          <SelectItem value="B.Tech CS">B.Tech CS</SelectItem>
           <SelectItem value="B.Tech AI">B.Tech AI</SelectItem>
           <SelectItem value="B.Tech DS">B.Tech DS</SelectItem>
           <SelectItem value="BCA">BCA</SelectItem>
           <SelectItem value="BBA">BBA</SelectItem>
-          <SelectItem value="B.Com">B.Com</SelectItem>
-          <SelectItem value="Other">Other</SelectItem>
+          <SelectItem value="BFSI">BFSI</SelectItem>
+          <SelectItem value="B.Sc Data Analytics">B.Sc Data Analytics</SelectItem>
+          <SelectItem value="MBA">MBA</SelectItem>
         </SelectContent>
       </Select>
-      <Select value={player.year || undefined} onValueChange={(val) => onChange({...player, year: val})}>
+      <Select value={player.year || undefined} onValueChange={(val) => onChange({ ...player, year: val })}>
         <SelectTrigger className="bg-background/50"><SelectValue placeholder="Year" /></SelectTrigger>
         <SelectContent>
           <SelectItem value="1st Year">1st Year</SelectItem>
@@ -174,7 +174,7 @@ export default function RegistrationModal({
         <div className="p-6 pb-2">
           <DialogHeader>
             <DialogTitle className="font-display text-2xl tracking-wide flex items-center gap-3">
-              <span className="text-3xl">{event.emoji}</span> 
+              <span className="text-3xl">{event.emoji}</span>
               REGISTER FOR {event.name.toUpperCase()}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground/80 mt-1">
@@ -199,7 +199,7 @@ export default function RegistrationModal({
         ) : (
           <div className="px-6 pb-6 mt-4">
             <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-              
+
               {/* === TEAM ONLY: TEAM NAME === */}
               {event.type === "team" && (
                 <div className="space-y-2">
@@ -215,20 +215,20 @@ export default function RegistrationModal({
 
               {/* === COMMON: LEADER / PLAYER 1 === */}
               <div className="space-y-4">
-                <PlayerFormGroup 
-                  title={event.type === "individual" ? "PLAYER DETAILS" : event.type === "duo" ? "PLAYER 1" : "TEAM LEADER"} 
-                  player={leader} 
-                  onChange={setLeader} 
+                <PlayerFormGroup
+                  title={event.type === "individual" ? "PLAYER DETAILS" : event.type === "duo" ? "PLAYER 1" : "TEAM LEADER"}
+                  player={leader}
+                  onChange={setLeader}
                 />
               </div>
 
               {/* === DUO ONLY: PLAYER 2 === */}
               {event.type === "duo" && (
                 <div className="space-y-4 pt-2 border-t border-border/40">
-                  <PlayerFormGroup 
-                    title="PLAYER 2" 
-                    player={player2} 
-                    onChange={setPlayer2} 
+                  <PlayerFormGroup
+                    title="PLAYER 2"
+                    player={player2}
+                    onChange={setPlayer2}
                   />
                 </div>
               )}
@@ -241,11 +241,11 @@ export default function RegistrationModal({
                   </div>
                   <div className="space-y-4">
                     {members.map((m, i) => (
-                      <PlayerFormGroup 
+                      <PlayerFormGroup
                         key={i}
-                        title={`MEMBER ${i + 1}`} 
-                        player={m} 
-                        onChange={(val) => updateMember(i, val)} 
+                        title={`MEMBER ${i + 1}`}
+                        player={m}
+                        onChange={(val) => updateMember(i, val)}
                         onRemove={() => removeMember(i)}
                         isMember={members.length > 1}
                       />
