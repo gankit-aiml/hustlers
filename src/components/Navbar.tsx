@@ -44,11 +44,11 @@ export default function Navbar() {
           </div>
           <span className="font-heading text-lg font-bold text-foreground tracking-wide hidden sm:block shadow-sm">DSEU</span>
 
-          <div className="flex items-center justify-center w-12 h-12">
+          <div className="flex items-center justify-center w-10 h-10">
             <img src={sportsLogo} alt="Sports Society" className="w-full h-full object-contain drop-shadow-md" />
           </div>
-          <span className="font-heading text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary hidden lg:block tracking-wide">
-            Hustlers - Sports Club
+          <span className="font-heading text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-wide leading-tight">
+            Hustlers<br className="hidden sm:block" /> Sports Club
           </span>
         </Link>
 
