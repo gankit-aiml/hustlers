@@ -18,7 +18,7 @@ const leaders = [
     role: "Vice President",
     name: "Asma Iman",
     classification: "B.Tech AI",
-    year: "3rd Year",
+    year: "2nd Year",
     photo: photoVicePresident
   },
   {
