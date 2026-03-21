@@ -153,7 +153,7 @@ export const events: EventData[] = [
     whatsappLink: "https://chat.whatsapp.com/HwiyFb3MK659Z0kqLxCBXc?mode=gi_t",
     facultyIncharges: ["Dr. Mamta Mittal"],
     captains: [
-      { name: "TBD", role: "Captain", program: "To be decided", phone: "-" },
+      { name: "Rupali", role: "Captain", program: "B.Tech AI", phone: "9255558872" },
     ],
     generalRules: [
       "Breaking: The first player breaks the center cluster. If no coins leave the center circle, the turn passes.",
