@@ -1,3 +1,12 @@
+import posterVolleyball from "@/assets/poster-volleyball.png";
+import posterArmWrestling from "@/assets/poster-arm_wrestling.png";
+import posterBadminton from "@/assets/poster-badminton.png";
+import posterCarrom from "@/assets/poster-carrom.png";
+import posterTableTennis from "@/assets/poster-table_tennis.png";
+import posterTugOfWar from "@/assets/poster-tug_of_war.png";
+import posterFootball from "@/assets/poster-football.png";
+import posterChess from "@/assets/poster-chess.png";
+
 export interface Captain {
   name: string;
   role: string;
@@ -13,6 +22,7 @@ export interface EventData {
   date: string;
   time: string;
   image: string;
+  poster?: string;
   facultyIncharges: string[];
   captains: Captain[];
   generalRules: string[];
@@ -25,10 +35,11 @@ export const events: EventData[] = [
     id: "volleyball",
     name: "Volleyball",
     emoji: "🏐",
-    type: "individual",
+    type: "team",
     date: "25 March 2026",
     time: "03:00 PM - 05:00 PM",
     image: "event-volleyball",
+    poster: posterVolleyball,
     whatsappLink: " https://chat.whatsapp.com/H2rrKcLKy7j1KDf4uPqCyI?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate", "Dr. Preeti Bedi"],
     captains: [
@@ -58,6 +69,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-armwrestling",
+    poster: posterArmWrestling,
     whatsappLink: "https://chat.whatsapp.com/HxfcsqmqTk21J2Di8T97Uj?mode=gi_t",
     facultyIncharges: ["Dr. Ajith Kumar", "Sh. S.K. Awasthi", "Mrs. S.P. Meenu Kalra"],
     captains: [
@@ -80,10 +92,11 @@ export const events: EventData[] = [
     id: "badminton",
     name: "Badminton",
     emoji: "🏸",
-    type: "individual",
+    type: "duo",
     date: "24 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-badminton",
+    poster: posterBadminton,
     whatsappLink: "https://chat.whatsapp.com/LYBUaOIEemv7UhHqDJUvbX?mode=gi_t",
     facultyIncharges: ["Sh. G.T.V.LN. Charyulu", "Mrs. Meenu Kalra"],
     captains: [
@@ -111,6 +124,7 @@ export const events: EventData[] = [
     date: "24 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-chess",
+    poster: posterChess,
     whatsappLink: "https://chat.whatsapp.com/J0teu29xJmiJmZUe4czPeC?mode=gi_t",
     facultyIncharges: ["Sh. Deepak Sharma", "Dr. Kaushal Mehta"],
     captains: [
@@ -135,6 +149,7 @@ export const events: EventData[] = [
     date: "25 March 2026",
     time: "TBD",
     image: "event-carrom",
+    poster: posterCarrom,
     whatsappLink: "https://chat.whatsapp.com/HwiyFb3MK659Z0kqLxCBXc?mode=gi_t",
     facultyIncharges: ["Dr. Mamta Mittal"],
     captains: [
@@ -159,6 +174,7 @@ export const events: EventData[] = [
     date: "24 March 2026",
     time: "2:00 PM - 4:00 PM",
     image: "event-tabletennis",
+    poster: posterTableTennis,
     whatsappLink: "https://chat.whatsapp.com/GyPVMfXNyRmFJKusx37d2C?mode=gi_t",
     facultyIncharges: ["Dr. P. Preeti Bedi", "Sh. Chitre"],
     captains: [
@@ -179,10 +195,11 @@ export const events: EventData[] = [
     id: "tug-of-war",
     name: "Tug of War",
     emoji: "🪢",
-    type: "individual",
+    type: "team",
     date: "25 March 2026",
     time: "1:00 PM",
     image: "event-tugofwar",
+    poster: posterTugOfWar,
     whatsappLink: "https://chat.whatsapp.com/LlHnyU6JZFs8I7Mq6iUIuJ?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate", "Dr. Preeti Bedi"],
     captains: [
@@ -203,10 +220,11 @@ export const events: EventData[] = [
     id: "football",
     name: "Football",
     emoji: "⚽",
-    type: "individual",
+    type: "team",
     date: "25 March 2026",
     time: "11:00 AM - 1:00 PM",
     image: "event-football",
+    poster: posterFootball,
     whatsappLink: "https://chat.whatsapp.com/IZWg4grwQlLJeqqe1lbLK3?mode=gi_t",
     facultyIncharges: ["Sh. J.R. Bhowate"],
     captains: [

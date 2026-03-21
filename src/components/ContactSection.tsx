@@ -37,7 +37,7 @@ export default function ContactSection() {
         <div className="rounded-xl overflow-hidden border border-border shadow-sport h-80">
           <iframe
             title="BPDSEU Campus Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.574977086!2d77.2784!3d28.6380!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfca72f2f07b7%3A0x5e45a3dc0d3f6a35!2sBhai%20Parmanand%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+            src="https://maps.google.com/maps?q=28.630164,77.2852984&t=&z=16&ie=UTF8&iwloc=&output=embed"
             width="100%"
             height="100%"
             style={{ border: 0 }}

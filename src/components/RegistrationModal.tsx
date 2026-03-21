@@ -22,22 +22,25 @@ interface PlayerDetails {
   department: string;
   year: string;
   phone: string;
+  weight?: string;
 }
 
-const emptyPlayer = (): PlayerDetails => ({ name: "", rollNo: "", department: "", year: "", phone: "" });
+const emptyPlayer = (): PlayerDetails => ({ name: "", rollNo: "", department: "", year: "", phone: "", weight: "" });
 
 const PlayerFormGroup = ({
   title,
   player,
   onChange,
   onRemove,
-  isMember = false
+  isMember = false,
+  showWeight = false
 }: {
   title: string;
   player: PlayerDetails;
   onChange: (p: PlayerDetails) => void;
   onRemove?: () => void;
   isMember?: boolean;
+  showWeight?: boolean;
 }) => (
   <div className="space-y-3 p-4 border border-border/50 rounded-xl bg-muted/20 relative group">
     <div className="flex justify-between items-center mb-1">
@@ -78,6 +81,9 @@ const PlayerFormGroup = ({
         </SelectContent>
       </Select>
     </div>
+    {showWeight && (
+      <Input placeholder="Body Weight (e.g. 75kg)" value={player.weight || ""} onChange={(e) => onChange({ ...player, weight: e.target.value })} className="bg-background/50" />
+    )}
   </div>
 );
 
@@ -117,27 +123,16 @@ export default function RegistrationModal({
     setMembers(copy);
   };
 
-  const isFormIncomplete = (p: PlayerDetails) => !p.name.trim() || !p.rollNo.trim() || !p.department || !p.year || !p.phone.trim();
+  const isFormIncomplete = (p: PlayerDetails, isArmWrestling: boolean) => 
+    !p.name.trim() || !p.rollNo.trim() || !p.department || !p.year || !p.phone.trim() || (isArmWrestling && !p.weight?.trim());
 
   const handleSubmit = async () => {
     if (!user) {
       toast.error("You must be logged in to register.");
       return;
     }
-    if (event.type === "team" && !teamName.trim()) {
-      toast.error("Please enter a Team Name");
-      return;
-    }
-    if (isFormIncomplete(leader)) {
-      toast.error(`Please fill all fields for ${event.type === "individual" ? "Player" : "the Team Leader"}`);
-      return;
-    }
-    if (event.type === "duo" && isFormIncomplete(player2)) {
-      toast.error("Please fill all fields for Player 2");
-      return;
-    }
-    if (event.type === "team" && members.some(isFormIncomplete)) {
-      toast.error("Please fill all fields for every Team Member");
+    if (isFormIncomplete(leader, event.id === "arm-wrestling")) {
+      toast.error("Please fill all required fields for your Player Details");
       return;
     }
 
@@ -166,13 +161,13 @@ export default function RegistrationModal({
         event_name: event.name,
         event_type: event.type,
         user_email: user.email,
-        team_name: event.type === "team" ? teamName : null,
+        team_name: event.id === "arm-wrestling" ? `Weight: ${leader.weight}` : null,
         leader_name: leader.name,
         leader_roll: leader.rollNo,
         leader_dept: leader.department,
         leader_year: leader.year,
         leader_phone: leader.phone,
-        members: event.type === "individual" ? [] : event.type === "duo" ? [player2] : members,
+        members: [], // Forces all registrations to act as individual in backend
       };
 
       const { error } = await supabase.from("registrations").insert(payload);
@@ -201,9 +196,7 @@ export default function RegistrationModal({
               REGISTER FOR {event.name.toUpperCase()}
             </DialogTitle>
             <DialogDescription className="text-muted-foreground/80 mt-1">
-              {event.type === "team" && "Complete your team details below."}
-              {event.type === "duo" && "Register your duo team details below."}
-              {event.type === "individual" && "Fill in your personal details to enter."}
+              Fill in your personal details to enter. (Teams are formed on-spot!)
             </DialogDescription>
           </DialogHeader>
         </div>
@@ -233,67 +226,15 @@ export default function RegistrationModal({
           <div className="px-6 pb-6 mt-4">
             <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
 
-              {/* === TEAM ONLY: TEAM NAME === */}
-              {event.type === "team" && (
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold font-heading text-secondary">TEAM ID</label>
-                  <Input
-                    placeholder="Enter your epic Team Name"
-                    value={teamName}
-                    onChange={(e) => setTeamName(e.target.value)}
-                    className="h-12 text-lg font-medium tracking-wide uppercase"
-                  />
-                </div>
-              )}
-
-              {/* === COMMON: LEADER / PLAYER 1 === */}
+              {/* ALways Force INDIVIDUAL Registration fields regardless of event.type tag */}
               <div className="space-y-4">
                 <PlayerFormGroup
-                  title={event.type === "individual" ? "PLAYER DETAILS" : event.type === "duo" ? "PLAYER 1" : "TEAM LEADER"}
+                  title="PLAYER DETAILS"
                   player={leader}
                   onChange={setLeader}
+                  showWeight={event.id === "arm-wrestling"}
                 />
               </div>
-
-              {/* === DUO ONLY: PLAYER 2 === */}
-              {event.type === "duo" && (
-                <div className="space-y-4 pt-2 border-t border-border/40">
-                  <PlayerFormGroup
-                    title="PLAYER 2"
-                    player={player2}
-                    onChange={setPlayer2}
-                  />
-                </div>
-              )}
-
-              {/* === TEAM ONLY: MEMBERS LIST === */}
-              {event.type === "team" && (
-                <div className="space-y-4 pt-4 border-t border-border/40">
-                  <div className="flex justify-between items-center">
-                    <label className="text-sm font-semibold font-heading text-muted-foreground">SQUAD MEMBERS</label>
-                  </div>
-                  <div className="space-y-4">
-                    {members.map((m, i) => (
-                      <PlayerFormGroup
-                        key={i}
-                        title={`MEMBER ${i + 1}`}
-                        player={m}
-                        onChange={(val) => updateMember(i, val)}
-                        onRemove={() => removeMember(i)}
-                        isMember={members.length > 1}
-                      />
-                    ))}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full font-heading mt-2 border-dashed border-2 hover:border-primary/50 text-muted-foreground hover:text-primary"
-                    onClick={addMember}
-                  >
-                    <Plus className="w-4 h-4 mr-2" /> Add Next Member
-                  </Button>
-                </div>
-              )}
             </div>
 
             <div className="pt-6 mt-2 border-t border-border">
@@ -302,7 +243,7 @@ export default function RegistrationModal({
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : (event.type === "team" ? "SUBMIT TEAM REGISTRATION" : "CONFIRM REGISTRATION")}
+                {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "CONFIRM REGISTRATION"}
               </Button>
             </div>
           </div>

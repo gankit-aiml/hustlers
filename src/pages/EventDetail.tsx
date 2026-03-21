@@ -152,12 +152,19 @@ export default function EventDetail() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="card-gradient rounded-2xl border border-border p-8 flex items-center justify-center shadow-sport overflow-hidden bg-transparent"
+            className={`card-gradient rounded-2xl border border-border flex items-center justify-center shadow-sport overflow-hidden bg-transparent ${!event.poster ? 'p-8' : ''}`}
           >
-            {/* Ambient looping animation for the detail page as well */}
-            <div className="w-full max-w-[16rem] aspect-square pointer-events-none drop-shadow-[0_0_15px_rgba(0,255,255,0.3)]">
-              <AnimatedIcon eventId={event.id} />
-            </div>
+            {event.poster ? (
+              <img 
+                src={event.poster} 
+                alt={`${event.name} Poster`} 
+                className="w-full h-full object-cover rounded-2xl" 
+              />
+            ) : (
+              <div className="w-full max-w-[16rem] aspect-square pointer-events-none drop-shadow-[0_0_15px_rgba(0,255,255,0.3)]">
+                <AnimatedIcon eventId={event.id} />
+              </div>
+            )}
           </motion.div>
 
           {/* Right: details */}

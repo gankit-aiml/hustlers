@@ -17,6 +17,7 @@ interface Registration {
   id: string;
   event_name: string;
   event_type: string;
+  user_email: string | null;
   team_name: string | null;
   leader_name: string;
   leader_roll: string;
@@ -102,7 +103,10 @@ export default function Dashboard() {
                   <th className="px-6 py-4">Event</th>
                   <th className="px-6 py-4">Participant Details</th>
                   <th className="px-6 py-4">Contact & Dept</th>
-                  <th className="px-6 py-4 text-center">Roster Size</th>
+                  {selectedEvent === "Arm Wrestling" && (
+                    <th className="px-6 py-4 text-center text-secondary">Weight</th>
+                  )}
+                  <th className="px-6 py-4">Email ID</th>
                   <th className="px-6 py-4">Registered At</th>
                 </tr>
               </thead>
@@ -117,7 +121,7 @@ export default function Dashboard() {
                       </span>
                     </td>
                     <td className="px-6 py-4 align-top">
-                      {row.event_type === "team" && row.team_name ? (
+                      {row.event_type === "team" && row.team_name && row.event_name !== "Arm Wrestling" ? (
                         <div>
                           <span className="font-bold text-secondary">Team: {row.team_name}</span>
                           <div className="text-xs mt-1">L: {row.leader_name} ({row.leader_roll})</div>
@@ -146,14 +150,22 @@ export default function Dashboard() {
                       <div>📞 {row.leader_phone}</div>
                       <div className="text-muted-foreground">🏢 {row.leader_dept}</div>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="inline-flex items-center justify-center gap-1 bg-accent/20 text-accent-foreground px-2 py-1 rounded-md text-xs font-bold">
-                        <Users className="w-3 h-3" />
-                        {1 + (row.members ? row.members.length : 0)}
-                      </div>
+                    {selectedEvent === "Arm Wrestling" && (
+                      <td className="px-6 py-4 text-center align-top font-bold text-primary font-heading">
+                        {row.team_name ? row.team_name.replace('Weight: ', '') : 'N/A'}
+                      </td>
+                    )}
+                    <td className="px-6 py-4 text-xs align-top">
+                      {row.user_email ? (
+                        <a href={`mailto:${row.user_email}`} className="text-secondary hover:underline break-all mt-1 inline-block">
+                          {row.user_email}
+                        </a>
+                      ) : (
+                        <span className="text-muted-foreground italic">Missing</span>
+                      )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-xs">
-                      {new Date(row.created_at).toLocaleString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-xs align-top">
+                      <span className="mt-1 block">{new Date(row.created_at).toLocaleString()}</span>
                     </td>
                   </tr>
                 ))}
