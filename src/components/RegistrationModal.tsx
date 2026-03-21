@@ -143,10 +143,29 @@ export default function RegistrationModal({
 
     setIsSubmitting(true);
     try {
+      // Additional backend check before insertion
+      const { data: existingRegs, error: checkError } = await supabase
+        .from("registrations")
+        .select("id")
+        .eq("event_id", event.id)
+        .ilike("user_email", user.email)
+        .limit(1);
+
+      if (checkError) throw checkError;
+
+      if (existingRegs && existingRegs.length > 0) {
+        toast.error("You have already registered for this event.");
+        window.localStorage.setItem(`registered_${event.id}`, "true");
+        setIsSubmitting(false);
+        onClose();
+        return;
+      }
+
       const payload = {
         event_id: event.id,
         event_name: event.name,
         event_type: event.type,
+        user_email: user.email,
         team_name: event.type === "team" ? teamName : null,
         leader_name: leader.name,
         leader_roll: leader.rollNo,

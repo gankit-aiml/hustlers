@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AnimatedIcon } from "@/components/AnimatedIcons";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -16,7 +17,7 @@ export default function EventDetail() {
   const [showRegister, setShowRegister] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [isIntroPlaying, setIsIntroPlaying] = useState(true);
-  const { user, signInWithGoogle } = useAuth();
+  const { user, isLoading: authLoading, signInWithGoogle } = useAuth();
 
   useEffect(() => {
     // Reset the animation state whenever the ID changes
@@ -27,13 +28,64 @@ export default function EventDetail() {
     return () => clearTimeout(timer);
   }, [id]);
 
-  // Check if locally registered whenever event mounts or modal closes
+  const [isCheckingRegistration, setIsCheckingRegistration] = useState(true);
+
+  // Check registration status (local + backend) whenever event mounts, modal closes, or user changes
   useEffect(() => {
-    if (event?.id) {
+    if (authLoading) return;
+
+    let isMounted = true;
+    const checkRegistration = async () => {
+      if (!event?.id) return;
+      
+      setIsCheckingRegistration(true);
       const localCheck = window.localStorage.getItem(`registered_${event.id}`);
-      setIsRegistered(localCheck === "true");
-    }
-  }, [event?.id, showRegister]);
+      
+      // If not logged in, rely solely on localCheck
+      if (!user) {
+        if (localCheck === "true" && isMounted) {
+          setIsRegistered(true);
+        } else if (isMounted) {
+          setIsRegistered(false);
+        }
+        if (isMounted) setIsCheckingRegistration(false);
+        return;
+      }
+
+      // If logged in, we must ALWAYS query the backend to confirm.
+      if (user.email) {
+        try {
+          const { data, error } = await supabase
+            .from("registrations")
+            .select("id")
+            .eq("event_id", event.id)
+            .ilike("user_email", user.email)
+            .limit(1);
+
+          if (!error && data && data.length > 0) {
+            if (isMounted) setIsRegistered(true);
+            window.localStorage.setItem(`registered_${event.id}`, "true");
+          } else {
+            // DB says no registration exists for this email!
+            if (isMounted) setIsRegistered(false);
+            window.localStorage.removeItem(`registered_${event.id}`);
+          }
+        } catch (err) {
+          console.error("Error checking registration:", err);
+          // Fallback to local storage if DB fetch completely fails (e.g. offline)
+          if (localCheck === "true" && isMounted) setIsRegistered(true);
+        }
+      }
+      
+      if (isMounted) setIsCheckingRegistration(false);
+    };
+
+    checkRegistration();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [event?.id, showRegister, user, authLoading]);
 
   if (!event) {
     return (
@@ -217,8 +269,9 @@ export default function EventDetail() {
                 size="lg"
                 className="w-full gradient-cta text-primary-foreground font-heading text-lg h-12 border border-primary/20"
                 onClick={() => setShowRegister(true)}
+                disabled={isCheckingRegistration}
               >
-                Register Now
+                {isCheckingRegistration ? "Verifying Registration..." : "Register Now"}
               </Button>
             ) : (
               <Button
