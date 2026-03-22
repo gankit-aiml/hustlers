@@ -45,7 +45,7 @@ export const events: EventData[] = [
     captains: [
       { name: "Abhinav", role: "Captain", program: "B.Tech DS", phone: "9111422551" },
       { name: "Gaurav", role: "Vice Captain", program: "BCA", phone: "8700493886" },
-      { name: "Priyansh", role: "Captain", program: "BCA", phone: "9582455736" },
+      { name: "Priyanshi", role: "Captain", program: "BCA", phone: "9582455736" },
     ],
     generalRules: [
       "Team Size: 6 players on the court per team (plus substitutes).",
