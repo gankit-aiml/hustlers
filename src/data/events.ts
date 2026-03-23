@@ -147,7 +147,7 @@ export const events: EventData[] = [
     emoji: "🎯",
     type: "individual",
     date: "25 March 2026",
-    time: "TBD",
+    time: "2:00 PM - 4:00 PM",
     image: "event-carrom",
     poster: posterCarrom,
     whatsappLink: "https://chat.whatsapp.com/HwiyFb3MK659Z0kqLxCBXc?mode=gi_t",

@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Users, Database, Filter } from "lucide-react";
+import { Loader2, Users, Database, Filter, Download } from "lucide-react";
 
 // Synchronize this with Navbar.tsx!
 const ADMIN_EMAILS = [
@@ -22,6 +22,7 @@ interface Registration {
   leader_name: string;
   leader_roll: string;
   leader_dept: string;
+  leader_year: string | null;
   leader_phone: string;
   members: any[];
   created_at: string;
@@ -69,6 +70,33 @@ export default function Dashboard() {
   const uniqueEvents = Array.from(new Set(data.map(d => d.event_name)));
   const filteredData = selectedEvent === "All" ? data : data.filter(d => d.event_name === selectedEvent);
 
+  const downloadCSV = () => {
+    const headers = ["Event", "Type", "Team/Participant", "Roll No", "Phone", "Department", "Year", "Email", "Registered At"];
+    const rows = filteredData.map(row => [
+      row.event_name,
+      row.event_type,
+      row.team_name ? `${row.team_name} (L: ${row.leader_name})` : row.leader_name,
+      row.leader_roll,
+      row.leader_phone,
+      row.leader_dept,
+      row.leader_year ?? "",
+      row.user_email ?? "",
+      new Date(row.created_at).toLocaleString(),
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `registrations-${selectedEvent.replace(/ /g, "_")}-${Date.now()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -79,7 +107,7 @@ export default function Dashboard() {
             <h1 className="font-display text-4xl text-foreground">COMMAND CENTER</h1>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Filter className="w-4 h-4 text-muted-foreground mr-1" />
             <Select value={selectedEvent} onValueChange={setSelectedEvent}>
               <SelectTrigger className="w-[200px] bg-card border-border">
@@ -92,6 +120,13 @@ export default function Dashboard() {
                 ))}
               </SelectContent>
             </Select>
+            <button
+              onClick={downloadCSV}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download CSV
+            </button>
           </div>
         </div>
 
@@ -102,7 +137,7 @@ export default function Dashboard() {
                 <tr>
                   <th className="px-6 py-4">Event</th>
                   <th className="px-6 py-4">Participant Details</th>
-                  <th className="px-6 py-4">Contact & Dept</th>
+                  <th className="px-6 py-4">Contact, Dept & Year</th>
                   {selectedEvent === "Arm Wrestling" && (
                     <th className="px-6 py-4 text-center text-secondary">Weight</th>
                   )}
@@ -140,7 +175,7 @@ export default function Dashboard() {
                           {row.members.map((m, idx) => (
                             <div key={idx} className="text-xs space-y-0.5 bg-background/50 p-2 rounded-md border border-border/50">
                               <div className="font-medium text-foreground">{m.name} <span className="text-muted-foreground font-normal">({m.rollNo})</span></div>
-                              <div className="text-muted-foreground">📞 {m.phone} • {m.department}</div>
+                              <div className="text-muted-foreground">📞 {m.phone} • {m.department}{m.year ? ` • ${m.year}` : ""}</div>
                             </div>
                           ))}
                         </div>
@@ -149,6 +184,9 @@ export default function Dashboard() {
                     <td className="px-6 py-4 text-xs space-y-1 align-top">
                       <div>📞 {row.leader_phone}</div>
                       <div className="text-muted-foreground">🏢 {row.leader_dept}</div>
+                      {row.leader_year && (
+                        <div className="text-muted-foreground">📅 {row.leader_year}</div>
+                      )}
                     </td>
                     {selectedEvent === "Arm Wrestling" && (
                       <td className="px-6 py-4 text-center align-top font-bold text-primary font-heading">
