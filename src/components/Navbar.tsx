@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { hasDashboardAccess } from "@/lib/permissions";
 import dseuLogo from "@/assets/dseu-logo.png";
 import sportsLogo from "@/assets/sports-logo.png";
 
@@ -12,12 +13,7 @@ const navLinks = [
   { label: "Contact", href: "/#contact" },
 ];
 
-// Provide your authorized admin emails here
-const ADMIN_EMAILS = [
-  "gankitsysdev@gmail.com",
-  "sam8920341517@gmail.com",
-  "sumitrathore45528@gmail.com",
-];
+
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,7 +29,7 @@ export default function Navbar() {
     }
   };
 
-  const isAdmin = user && user.email && ADMIN_EMAILS.includes(user.email);
+  const isAdmin = user && user.email && hasDashboardAccess(user.email);
 
   return (
     <nav className="sticky top-0 z-40 border-b border-border bg-card/80 backdrop-blur-md">

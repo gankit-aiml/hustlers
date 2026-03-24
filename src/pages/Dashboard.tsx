@@ -4,14 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import Navbar from "@/components/Navbar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Users, Database, Filter, Download } from "lucide-react";
-
-// Synchronize this with Navbar.tsx!
-const ADMIN_EMAILS = [
-  "gankitsysdev@gmail.com",
-  "sam8920341517@gmail.com",
-  "sumitrathore45528@gmail.com",
-];
+import { Loader2, Database, Filter, Download } from "lucide-react";
+import { ADMIN_EMAILS, hasDashboardAccess, getCoordinatorEvent } from "@/lib/permissions";
 
 interface Registration {
   id: string;
@@ -35,21 +29,32 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState<string>("All");
 
+  // Determine access level on render (derived, not state)
+  const coordinatorEvent = user?.email ? getCoordinatorEvent(user.email) : null;
+  const isAdmin = user?.email ? ADMIN_EMAILS.map(e => e.toLowerCase()).includes(user.email.toLowerCase()) : false;
+
   useEffect(() => {
     if (authLoading) return;
 
-    // Quick security boot
-    if (!user || !user.email || !ADMIN_EMAILS.includes(user.email)) {
+    // Allow admins and event coordinators; kick everyone else
+    if (!user || !user.email || !hasDashboardAccess(user.email)) {
       navigate("/");
       return;
     }
 
     const fetchData = async () => {
-      const { data: records, error } = await supabase
+      let query = supabase
         .from("registrations")
         .select("*")
         .order("created_at", { ascending: false });
 
+      // Coordinators only see their own event
+      const myEvent = getCoordinatorEvent(user.email!);
+      if (myEvent && !ADMIN_EMAILS.map(e => e.toLowerCase()).includes(user.email!.toLowerCase())) {
+        query = query.eq("event_name", myEvent);
+      }
+
+      const { data: records, error } = await query;
       if (!error && records) {
         setData(records);
       }
@@ -69,6 +74,8 @@ export default function Dashboard() {
 
   const uniqueEvents = Array.from(new Set(data.map(d => d.event_name)));
   const filteredData = selectedEvent === "All" ? data : data.filter(d => d.event_name === selectedEvent);
+  // Coordinators are locked to their event — no filter UI needed
+  const showEventFilter = isAdmin;
 
   const downloadCSV = () => {
     const headers = ["Event", "Type", "Team/Participant", "Roll No", "Phone", "Department", "Year", "Email", "Registered At"];
@@ -108,18 +115,27 @@ export default function Dashboard() {
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
-            <Filter className="w-4 h-4 text-muted-foreground mr-1" />
-            <Select value={selectedEvent} onValueChange={setSelectedEvent}>
-              <SelectTrigger className="w-[200px] bg-card border-border">
-                <SelectValue placeholder="Filter by Event" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All">All Events</SelectItem>
-                {uniqueEvents.map(e => (
-                  <SelectItem key={e} value={e}>{e}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {showEventFilter && (
+              <>
+                <Filter className="w-4 h-4 text-muted-foreground mr-1" />
+                <Select value={selectedEvent} onValueChange={setSelectedEvent}>
+                  <SelectTrigger className="w-[200px] bg-card border-border">
+                    <SelectValue placeholder="Filter by Event" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="All">All Events</SelectItem>
+                    {uniqueEvents.map(e => (
+                      <SelectItem key={e} value={e}>{e}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </>
+            )}
+            {!showEventFilter && coordinatorEvent && (
+              <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
+                📋 {coordinatorEvent}
+              </span>
+            )}
             <button
               onClick={downloadCSV}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
