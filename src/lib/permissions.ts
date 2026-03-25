@@ -16,14 +16,6 @@ export const ADMIN_EMAILS: string[] = [
 
 /** email (lowercase) → exact event_name in the DB */
 export const EVENT_COORDINATOR_MAP: Record<string, string> = {
-  "ak.abhi9896@gmail.com": "Table Tennis",
-  "vymahi1322@gmail.com": "Badminton",
-  "sahilkumar.alive@gmail.com": "Football",
-  "writemehul13@gmail.com": "Chess",
-  "abhinavrai0408@gmail.com": "Volleyball",
-  "devanshv547@gmail.com": "Arm Wrestling",
-  "rupalichoudhary789@gmail.com": "Carrom",
-  "mahrapriyanshi2@gmail.com": "Volleyball",
 };
 
 /** Returns the event a coordinator is restricted to, or null if they are a full admin. */
